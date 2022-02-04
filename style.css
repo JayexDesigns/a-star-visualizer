@@ -1,0 +1,117 @@
+:root {
+    --background-color: #f6f9fa;
+    --section-color: #ffffff;
+    --text-color: #1a1a1a;
+    --primary-color: #0099ff;
+    --secondary-color: #b2c0c6;
+    --secondary-color-light: #e1e9ec;
+    --terciary-color: #2a363b;
+    --shadow-color: #1a1a1a10;
+
+    --start-point-color: #2cad7a;
+    --end-point-color: #e5383b;
+    --barrier-color: #2a363b;
+
+    --hover-action-color: var(--secondary-color-light);
+}
+
+body * {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-color);
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+
+
+h1 {
+    text-align: center;
+    margin: 3rem auto;
+    background-color: var(--section-color);
+    box-shadow: 0 0.5rem 0.75rem 0.25rem var(--shadow-color);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 80vw;
+    padding: 1.5rem;
+}
+
+#algorithm-section {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: var(--section-color);
+    box-shadow: 0 0.5rem 0.75rem 0.25rem var(--shadow-color);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 80vw;
+    padding: 1.5rem;
+}
+
+#controls {
+    margin: 2rem 0;
+}
+
+#controls > button {
+    border: none;
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    font-weight: 700;
+    margin-right: 1rem;
+    color: var(--section-color);
+    cursor: pointer;
+    transition: .15s ease-in-out;
+}
+#controls > button > i {
+    margin-left: 0.25rem;
+    color: var(--section-color);
+    transition: .15s ease-in-out;
+}
+
+#controls > button:hover {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0 0.25rem 0.75rem #1a1a1a40;
+}
+#controls > button:hover i {
+    color: var(--text-color);
+}
+
+#start-point-button {
+    background-color: var(--start-point-color);
+}
+#end-point-button {
+    background-color: var(--end-point-color);
+}
+#barrier-button {
+    background-color: var(--barrier-color);
+}
+#start-button {
+    float: right;
+    margin-right: 0 !important;
+    background-color: var(--primary-color);
+}
+
+
+
+#grid {
+    display: grid;
+}
+
+.tile {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: .1s ease-in-out;
+}
+
+.tile:hover {
+    background-color: var(--hover-action-color);
+}
