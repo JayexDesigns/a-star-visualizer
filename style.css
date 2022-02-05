@@ -52,7 +52,7 @@ h1 {
 }
 
 #controls {
-    margin: 2rem 0;
+    margin: 0.5rem 0 2rem 0;
 }
 
 #controls > button {
@@ -113,5 +113,5 @@ h1 {
 }
 
 .tile:hover {
-    background-color: var(--hover-action-color);
+    background-color: var(--hover-action-color) !important;
 }
