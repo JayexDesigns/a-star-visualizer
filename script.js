@@ -135,16 +135,15 @@ const startAlgorithm = async () => {
             }
         }
 
-        console.log(open);
         for (let i = 0; i < open.length; ++i) if (
             !(open[i].x === startPoint[0] && open[i].y === startPoint[1]) &&
             !(open[i].x === endPoint[0] && open[i].y === endPoint[1])
-        ) setTileColor(open[i].x, open[i].y, "#fca311");
+        ) setTileColor(open[i].x, open[i].y, "var(--evaluating-color)");
 
         for (let i = 0; i < closed.length; ++i) if (
             !(closed[i].x === startPoint[0] && closed[i].y === startPoint[1]) &&
             !(closed[i].x === endPoint[0] && closed[i].y === endPoint[1])
-        ) setTileColor(closed[i].x, closed[i].y, "#ff0066");
+        ) setTileColor(closed[i].x, closed[i].y, "var(--evaluated-color)");
 
         await sleep(50);
     }
@@ -154,11 +153,10 @@ const startAlgorithm = async () => {
 
 startButton.addEventListener('click', () => {
     startAlgorithm().then(res => {
-        console.log(res);
         if (res !== null) {
             let current = res.prev;
             while (current.prev !== null) {
-                setTileColor(current.x, current.y, "#00ccff");
+                setTileColor(current.x, current.y, "var(--path-color)");
                 current = current.prev;
             }
         }
@@ -174,7 +172,6 @@ startButton.addEventListener('click', () => {
 
 // Changes The Color Of A Tile
 const setTileColor = (i, j, color) => {
-    // console.log(i, j);
     document.getElementById(`tile-${i}-${j}`).style.backgroundColor = color;
 };
 
@@ -215,15 +212,20 @@ const tileClickHandle = (i, j) => {
 
 
 // Create The Grid
-grid.style.gap = `${gap}px`;
-grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+const createGrid = () => {
+    grid.style.gap = `${gap}px`;
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
-for (let i = 0; i < rows; ++i) {
-    for (let j = 0; j < cols; ++j) {
-        let tile = document.createElement("div");
-        tile.classList.add("tile");
-        tile.id = `tile-${j}-${i}`;
-        tile.addEventListener('click', () => tileClickHandle(j, i));
-        grid.appendChild(tile);
+    grid.innerHTML = '';
+
+    for (let i = 0; i < rows; ++i) {
+        for (let j = 0; j < cols; ++j) {
+            let tile = document.createElement("div");
+            tile.classList.add("tile");
+            tile.id = `tile-${j}-${i}`;
+            tile.addEventListener('click', () => tileClickHandle(j, i));
+            grid.appendChild(tile);
+        }
     }
-}
+};
+createGrid();

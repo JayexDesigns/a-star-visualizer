@@ -11,6 +11,9 @@
     --start-point-color: #2cad7a;
     --end-point-color: #e5383b;
     --barrier-color: #2a363b;
+    --evaluating-color: #fca311;
+    --evaluated-color: #ff70a6;
+    --path-color: #00ccff;
 
     --hover-action-color: var(--secondary-color-light);
 }
@@ -40,15 +43,13 @@ h1 {
 }
 
 #algorithm-section {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
     background-color: var(--section-color);
     box-shadow: 0 0.5rem 0.75rem 0.25rem var(--shadow-color);
     border-radius: 0.5rem;
     box-sizing: border-box;
     width: 80vw;
     padding: 1.5rem;
+    margin: 0 auto 3rem auto;
 }
 
 #controls {
