@@ -5,6 +5,10 @@ let cols = 25;
 let rows = 15;
 let gap = Math.floor(grid.offsetWidth/cols)/5;
 
+let delay = 50;
+let stopAlgorithm = false;
+let nextStep = false;
+
 let straightDistance = 10;
 
 let startPoint = null;
@@ -23,12 +27,28 @@ let currentTooltip = null;
 // Handles The Controls
 const colsInput = document.getElementById("cols-input");
 const rowsInput = document.getElementById("rows-input");
+
 const startPointButton = document.getElementById("start-point-button");
 const endPointButton = document.getElementById("end-point-button");
 const barrierButton = document.getElementById("barrier-button");
+const stopButton = document.getElementById("stop-button");
+const nextButton = document.getElementById("next-button");
 const resetButton = document.getElementById("reset-button");
 const startButton = document.getElementById("start-button");
+
 const tooltipBackground = document.getElementById("tooltip-background");
+
+const startMenu = document.getElementById("start-types");
+const startStep = document.getElementById("start-step");
+const startDelay = document.getElementById("start-delay");
+const startDelayInput = document.getElementById("start-delay-input");
+
+let startMenuDeployed = false;
+let startStepPressed = false;
+let startDelayPressed = false;
+let startDelayInputPressed = false;
+
+
 
 let currentAction = "none";
 
@@ -50,7 +70,7 @@ barrierButton.addEventListener('click', () => changeCurrentAction("barrier"));
 
 
 // Main Algorithm
-const startAlgorithm = async () => {
+const startAlgorithm = async (type) => {
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     if (startPoint === null || endPoint === null) return null;
@@ -80,7 +100,7 @@ const startAlgorithm = async () => {
 
     nodesOpen.push(point);
 
-    while (true) {
+    const step = () => {
         // Selects The Node With Lowest F Cost In The Open Array
         let current;
         let currentIndex;
@@ -160,20 +180,51 @@ const startAlgorithm = async () => {
             !(nodesClosed[i].x === startPoint[0] && nodesClosed[i].y === startPoint[1]) &&
             !(nodesClosed[i].x === endPoint[0] && nodesClosed[i].y === endPoint[1])
         ) setTileColor(nodesClosed[i].x, nodesClosed[i].y, "var(--evaluated-color)");
+    }
 
-        await sleep(50);
+    if (type === "delay") {
+        while (true) {
+            await sleep(delay);
+            if (stopAlgorithm) {
+                stopAlgorithm = false;
+                return null;
+            }
+            let res = step();
+            if (res === null || res) return res;
+        }
+    }
+
+    else if (type === "step") {
+        while (true) {
+            await sleep(50);
+            if (stopAlgorithm) {
+                stopAlgorithm = false;
+                return null;
+            }
+            if (nextStep) {
+                let res = step();
+                if (res === null || res) return res;
+                nextStep = false;
+            }
+        }
     }
 };
 
 
 
-// Start Button Handler
-startButton.addEventListener('click', () => {
+// Changes Layout, Styles And Starts The Algorithm
+const startHandler = async (type="delay") => {
     startPointButton.disabled = true;
     endPointButton.disabled = true;
     barrierButton.disabled = true;
     startButton.disabled = true;
-    startAlgorithm().then(res => {
+
+    stopButton.style.display = "inline-block";
+    if (type === "step") {
+        nextButton.style.display = "inline-block";
+    }
+
+    startAlgorithm(type).then(res => {
         if (res) {
             let current = res.prev;
             while (current.prev !== null) {
@@ -185,8 +236,64 @@ startButton.addEventListener('click', () => {
         endPointButton.disabled = false;
         barrierButton.disabled = false;
         startButton.disabled = false;
+
+        stopButton.style.display = "none";
+        if (type === "step") {
+            nextButton.style.display = "none";
+        }
     });
     changeCurrentAction("none");
+};
+
+// Stop Button Handler
+stopButton.addEventListener('click', () => stopAlgorithm = true);
+// Next Button Handler
+nextButton.addEventListener('click', () => nextStep = true);
+
+// Start Dropdown Menu
+const dropdownMenu = () => {
+    if (startMenuDeployed) {
+        startMenu.style.opacity = 0;
+        startMenu.style.top = "0";
+        startMenu.style.pointerEvents = "none";
+        startMenuDeployed = false;
+    }
+    else {
+        startMenu.style.opacity = 1;
+        startMenu.style.top = "3rem";
+        startMenu.style.pointerEvents = "all";
+        startMenuDeployed = true;
+    }
+};
+
+// Start Types Handlers
+startButton.addEventListener('click', () => {
+    if (startDelayInputPressed || startDelayPressed || startStepPressed) return;
+    dropdownMenu();
+});
+startStep.addEventListener('click', () => {
+    startStepPressed = true;
+    dropdownMenu();
+    startHandler("step");
+    setTimeout(() => startStepPressed = false, 50);
+});
+startDelay.addEventListener('click', () => {
+    if (startDelayInputPressed) return;
+    else startDelayPressed = true;
+    dropdownMenu();
+    startHandler("delay");
+    setTimeout(() => startDelayPressed = false, 50);
+});
+startDelayInput.addEventListener('click', () => {
+    startDelayInputPressed = true;
+    setTimeout(() => startDelayInputPressed = false, 50);
+});
+startDelayInput.addEventListener('change', (e) => {
+    let d = parseInt(e.target.value);
+    if (d < 1) d = 1;
+    else if (d > 10000) d = 10000;
+    e.target.value = d;
+    delay = d;
 });
 
 
@@ -252,7 +359,6 @@ const tileClickHandle = (i, j) => {
 
         let openNode = null;
         for (let node = 0; node < nodesOpen.length; ++node) if (nodesOpen[node].x === i && nodesOpen[node].y === j) openNode = nodesOpen[node];
-        console.log(openNode);
 
         let closedNode = null;
         if (!openNode) {
@@ -289,6 +395,7 @@ const createGrid = () => {
     barriers = [];
     nodesOpen = [];
     nodesClosed = [];
+    nextStep = true;
     currentTooltip = null;
 
     grid.style.gap = `${gap}px`;

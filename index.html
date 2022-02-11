@@ -31,8 +31,16 @@
                     <button id="barrier-button">Set Barrier</button>
                 </span>
                 <span class="controls-right">
+                    <button id="stop-button">Stop <i class="fa-solid fa-ban"></i></button>
+                    <button id="next-button">Next <i class="fa-solid fa-angles-right"></i></button>
                     <button id="reset-button">Reset <i class="fas fa-rotate"></i></button>
-                    <button id="start-button">Start <i class="fas fa-chevron-down"></i></button>
+                    <button id="start-button">
+                        Start <i class="fas fa-chevron-down"></i>
+                        <ul id="start-types">
+                            <li id="start-step">Step By Step</li>
+                            <li id="start-delay">With Delay <input type="number" value="50" id="start-delay-input"> ms</li>
+                        </ul>
+                    </button>
                 </span>
             </div>
         </div>

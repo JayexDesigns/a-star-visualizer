@@ -3,6 +3,7 @@
     --section-color: #ffffff;
     --text-color: #1a1a1a;
     --primary-color: #0099ff;
+    --primary-color-dark: #0077ff;
     --secondary-color: #b2c0c6;
     --secondary-color-light: #e1e9ec;
     --terciary-color: #2a363b;
@@ -147,6 +148,45 @@ h1 {
     background-color: var(--barrier-color) !important;
 }
 
+#stop-button {
+    display: none;
+}
+#next-button {
+    display: none;
+}
+
+#start-button {
+    position: relative;
+}
+#start-button ul {
+    list-style: none;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-color: var(--primary-color);
+    min-width: max-content;
+    padding: 0.5rem 0;
+    border-radius: 0.25rem;
+    transition: .15s ease-in-out;
+}
+#start-button li {
+    color: var(--section-color);
+    padding: 1rem 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    transition: .25s ease-in-out;
+}
+#start-button li:hover {
+    background-color: var(--primary-color-dark);
+}
+#start-button li input {
+    margin: 0 0.5rem;
+    border-color: var(--terciary-color);
+}
+
 
 
 #grid {
@@ -178,7 +218,7 @@ h1 {
     padding: 1rem 1.25rem;
     border-radius: 1rem;
     opacity: 0;
-    z-index: 2;
+    z-index: 20;
     transition: .25s ease-in-out;
 }
 #tooltip p {
@@ -209,7 +249,7 @@ h1 {
     height: 100vh;
     pointer-events: none;
     background-color: unset;
-    z-index: 1;
+    z-index: 10;
 }
 
 
